@@ -3,6 +3,11 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 
+// TODO: Replace with your Formspree endpoint.
+// 1. Go to formspree.io → New Form → copy the endpoint URL (looks like https://formspree.io/f/xxxx)
+// 2. Replace the string below with your endpoint
+const FORMSPREE_ENDPOINT = 'https://formspree.io/f/YOUR_FORM_ID';
+
 const Contact = () => {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
@@ -10,12 +15,23 @@ const Contact = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus('sending');
-    
-    // For now, just show success (will wire to API later)
-    setTimeout(() => {
-      setStatus('success');
-      setFormData({ name: '', email: '', message: '' });
-    }, 1000);
+
+    try {
+      const response = await fetch(FORMSPREE_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        setStatus('success');
+        setFormData({ name: '', email: '', message: '' });
+      } else {
+        setStatus('error');
+      }
+    } catch {
+      setStatus('error');
+    }
   };
 
   return (
@@ -44,6 +60,18 @@ const Contact = () => {
               <div className="text-4xl mb-4">✓</div>
               <h2 className="text-xl font-bold mb-2">Message Sent!</h2>
               <p className="text-slate-600">I'll get back to you soon.</p>
+            </div>
+          ) : status === 'error' ? (
+            <div className="text-center py-8">
+              <div className="text-4xl mb-4">✗</div>
+              <h2 className="text-xl font-bold mb-2">Something went wrong</h2>
+              <p className="text-slate-600 mb-4">Please try again or email me directly.</p>
+              <button
+                onClick={() => setStatus('idle')}
+                className="text-primary-600 hover:underline text-sm"
+              >
+                Try again
+              </button>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-6">
