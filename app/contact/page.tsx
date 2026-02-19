@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 // TODO: Replace with your Formspree endpoint.
 // 1. Go to formspree.io → New Form → copy the endpoint URL (looks like https://formspree.io/f/xxxx)
 // 2. Replace the string below with your endpoint
-const FORMSPREE_ENDPOINT = 'https://formspree.io/f/YOUR_FORM_ID';
+const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mnjbbjrz';
 
 const Contact = () => {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
