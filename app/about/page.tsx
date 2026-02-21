@@ -18,14 +18,14 @@ const About = () => {
 
         {/* Bio section */}
         <div className="grid md:grid-cols-[1fr_2fr] gap-12 mb-20">
-          {/* Photo placeholder */}
+          {/* Photo */}
           <div className="fade-in">
-            <div
-              className="bg-elevated border border-white/10 rounded-xl w-full flex items-center justify-center text-secondary text-sm"
+            <img
+              src="/photos/noa.jpg"
+              alt="Noa Berger"
+              className="bg-elevated border border-white/10 rounded-xl w-full object-cover"
               style={{ aspectRatio: '3/4' }}
-            >
-              Photo
-            </div>
+            />
           </div>
 
           {/* Bio text */}
