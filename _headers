@@ -6,3 +6,6 @@
 
 /clients/*
   X-Robots-Tag: noindex
+
+/admin
+  X-Robots-Tag: noindex

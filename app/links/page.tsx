@@ -16,8 +16,7 @@ const categories = [
     links: [
       { title: 'OpenRouter', url: 'https://openrouter.ai', desc: 'Unified API gateway for 100+ AI models' },
       { title: 'Cloudflare', url: 'https://cloudflare.com', desc: 'CDN, DNS, Pages, and Workers' },
-      { title: 'Notion', url: 'https://notion.so', desc: 'Docs, wikis, and project tracking' },
-      { title: 'Obsidian', url: 'https://obsidian.md', desc: 'Personal knowledge management in Markdown' },
+      { title: 'Linear', url: 'https://linear.app', desc: 'Project tracking built for speed' },
     ],
   },
   {
@@ -33,7 +32,6 @@ const categories = [
     links: [
       { title: 'Basecamp', url: 'https://basecamp.com', desc: 'Profitable, calm company building done right' },
       { title: 'Stripe', url: 'https://stripe.com', desc: 'Best developer experience in fintech' },
-      { title: 'Linear', url: 'https://linear.app', desc: 'How software tools should feel' },
     ],
   },
 ];

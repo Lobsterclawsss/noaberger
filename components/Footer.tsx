@@ -17,8 +17,9 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="border-t border-white/10 mt-8 pt-8 text-center text-secondary text-sm">
+        <div className="border-t border-white/10 mt-8 pt-8 flex justify-between items-center text-secondary text-sm">
           <p>© {new Date().getFullYear()} Noa Berger. All rights reserved.</p>
+          <Link href="/admin" className="text-white/10 hover:text-white/30 transition-colors text-xs">⚙</Link>
         </div>
       </div>
     </footer>
