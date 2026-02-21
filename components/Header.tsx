@@ -12,6 +12,7 @@ const Header = () => {
           <ul className="flex space-x-8">
             <li><Link href="/about" className="text-secondary hover:text-white transition-colors text-sm">About</Link></li>
             <li><Link href="/work" className="text-secondary hover:text-white transition-colors text-sm">Work</Link></li>
+            <li><Link href="/links" className="text-secondary hover:text-white transition-colors text-sm">Links</Link></li>
             <li><Link href="/contact" className="text-secondary hover:text-white transition-colors text-sm">Contact</Link></li>
           </ul>
         </nav>

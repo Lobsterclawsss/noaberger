@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import nowData from '@/data/now.json';
 
 export const metadata: Metadata = {
   title: 'About — Noa Berger',
@@ -11,13 +12,6 @@ export const metadata: Metadata = {
 };
 
 const About = () => {
-  const nowItems = [
-    { text: 'Scaling BLEUKEI to 100+ local business clients', date: 'Feb 2026' },
-    { text: 'Launching noaberger.com — going live on Cloudflare Pages', date: 'Feb 2026' },
-    { text: 'Running OpenClaw — multi-agent AI platform automating operations', date: 'Ongoing' },
-    { text: 'Identifying early-stage operators to back as an angel investor', date: 'Ongoing' },
-  ];
-
   return (
     <div className="min-h-screen py-20 px-6">
       <div className="container mx-auto max-w-4xl">
@@ -57,10 +51,10 @@ const About = () => {
         <section className="mb-20">
           <div className="fade-in-2 flex items-baseline gap-3 mb-6">
             <h2 className="text-2xl font-bold text-white">Now</h2>
-            <span className="text-secondary text-sm">Updated Feb 2026</span>
+            <span className="text-secondary text-sm">Updated {nowData.updatedAt}</span>
           </div>
           <ul className="space-y-4">
-            {nowItems.map((item, i) => (
+            {nowData.items.map((item, i) => (
               <li key={i} className="flex gap-4 items-start border-b border-white/10 pb-4 last:border-0">
                 <span className="text-teal mt-1 flex-shrink-0">→</span>
                 <div>

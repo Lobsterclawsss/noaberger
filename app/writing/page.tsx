@@ -1,35 +1,39 @@
-"use client";
+import type { Metadata } from 'next';
+import Link from 'next/link';
 
-import { motion } from 'framer-motion';
+export const metadata: Metadata = {
+  title: 'Writing — Noa Berger',
+  description: 'Thoughts on AI systems, operations, and building businesses.',
+  openGraph: {
+    title: 'Writing — Noa Berger',
+    description: 'Thoughts on AI systems, operations, and building businesses.',
+  },
+};
 
 const Writing = () => {
   return (
     <div className="min-h-screen py-20 px-6">
       <div className="container mx-auto max-w-3xl">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="mb-12"
-        >
-          <h1 className="text-4xl font-bold mb-4">Writing</h1>
-          <p className="text-slate-600">
-            Thoughts on business, technology, and building things.
-          </p>
-        </motion.div>
+        <h1 className="fade-in text-4xl md:text-5xl font-bold mb-4 text-white">Writing</h1>
+        <p className="fade-in-1 text-secondary text-xl mb-16" style={{ maxWidth: '65ch' }}>
+          Thoughts on AI, operations, and building businesses.
+        </p>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="border border-slate-200 rounded-xl p-12 text-center"
-        >
-          <div className="text-5xl mb-6">✍️</div>
-          <h2 className="text-2xl font-bold mb-3">Coming Soon</h2>
-          <p className="text-slate-600 max-w-md mx-auto">
-            I'm working on writing about AI systems, operations, and what I've learned building businesses. Check back soon.
+        <div className="fade-in-2 border border-white/10 rounded-2xl p-12 text-center bg-surface">
+          <p className="text-4xl mb-6">✍️</p>
+          <h2 className="text-2xl font-bold mb-3 text-white">Coming Soon</h2>
+          <p className="text-secondary max-w-md mx-auto leading-relaxed">
+            Working on writing about AI systems, operations, and what I&apos;ve learned building businesses.
+            Check back soon — or subscribe to the{' '}
+            <Link
+              href="/feed.xml"
+              className="text-teal hover:text-mint transition-colors"
+            >
+              RSS feed
+            </Link>{' '}
+            to be notified.
           </p>
-        </motion.div>
+        </div>
       </div>
     </div>
   );
