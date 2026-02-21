@@ -1,4 +1,7 @@
 User-agent: *
 Allow: /
 
+# Disallow client portal URLs from indexing
+Disallow: /clients/
+
 Sitemap: https://noaberger.com/sitemap.xml

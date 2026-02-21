@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" fill="none">
+  <!-- Background -->
+  <rect width="1200" height="630" fill="#000000"/>
+  <!-- Mesh gradient blobs -->
+  <radialGradient id="g1" cx="20%" cy="60%" r="45%">
+    <stop offset="0%" stop-color="#0683a1" stop-opacity="0.18"/>
+    <stop offset="100%" stop-color="#0683a1" stop-opacity="0"/>
+  </radialGradient>
+  <radialGradient id="g2" cx="85%" cy="15%" r="40%">
+    <stop offset="0%" stop-color="#041840" stop-opacity="0.7"/>
+    <stop offset="100%" stop-color="#041840" stop-opacity="0"/>
+  </radialGradient>
+  <rect width="1200" height="630" fill="url(#g1)"/>
+  <rect width="1200" height="630" fill="url(#g2)"/>
+  <!-- Border -->
+  <rect x="1" y="1" width="1198" height="628" rx="0" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="2"/>
+  <!-- NB logo mark -->
+  <rect x="80" y="80" width="52" height="52" rx="10" fill="#0683a1"/>
+  <text x="106" y="117" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="700" fill="white" text-anchor="middle">NB</text>
+  <!-- Main headline -->
+  <text x="80" y="320" font-family="system-ui, -apple-system, sans-serif" font-size="80" font-weight="700" fill="white" letter-spacing="-2">Noa Berger</text>
+  <!-- Subtitle -->
+  <text x="80" y="400" font-family="system-ui, -apple-system, sans-serif" font-size="36" font-weight="400" fill="#A0A0A0">Operator &amp; Investor</text>
+  <!-- Divider -->
+  <line x1="80" y1="450" x2="280" y2="450" stroke="#0683a1" stroke-width="2"/>
+  <!-- URL -->
+  <text x="80" y="500" font-family="system-ui, -apple-system, sans-serif" font-size="24" fill="#A0A0A0">noaberger.com</text>
+  <!-- BLEUKEI tag -->
+  <rect x="80" y="530" width="120" height="36" rx="6" fill="rgba(6,131,161,0.15)" stroke="#0683a1" stroke-width="1" stroke-opacity="0.4"/>
+  <text x="140" y="553" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="600" fill="#0683a1" text-anchor="middle" letter-spacing="1">BLEUKEI</text>
+</svg>

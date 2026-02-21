@@ -8,13 +8,14 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: {
-          50: '#f0f9ff',
-          100: '#e0f2fe',
-          500: '#0ea5e9',
-          600: '#0284c7',
-          900: '#0c4a6e',
+        surface: '#0A0A0A',
+        elevated: '#141414',
+        teal: {
+          DEFAULT: '#0683a1',
+          hover: '#057a96',
         },
+        mint: '#00D4AA',
+        secondary: '#A0A0A0',
       },
     },
   },

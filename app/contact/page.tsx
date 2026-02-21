@@ -1,123 +1,61 @@
-"use client";
+import type { Metadata } from 'next';
+import Link from 'next/link';
 
-import { useState } from 'react';
-import { motion } from 'framer-motion';
-
-// TODO: Replace with your Formspree endpoint.
-// 1. Go to formspree.io → New Form → copy the endpoint URL (looks like https://formspree.io/f/xxxx)
-// 2. Replace the string below with your endpoint
-const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mnjbbjrz';
+export const metadata: Metadata = {
+  title: 'Contact — Noa Berger',
+  description: 'Get in touch with Noa Berger. Schedule a call, send an email, or connect on LinkedIn.',
+  openGraph: {
+    title: 'Contact — Noa Berger',
+    description: 'Get in touch with Noa Berger. Schedule a call, send an email, or connect on LinkedIn.',
+  },
+};
 
 const Contact = () => {
-  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
-  const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setStatus('sending');
-
-    try {
-      const response = await fetch(FORMSPREE_ENDPOINT, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify(formData),
-      });
-
-      if (response.ok) {
-        setStatus('success');
-        setFormData({ name: '', email: '', message: '' });
-      } else {
-        setStatus('error');
-      }
-    } catch {
-      setStatus('error');
-    }
-  };
-
   return (
     <div className="min-h-screen py-20 px-6">
       <div className="container mx-auto max-w-2xl">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-12"
-        >
-          <h1 className="text-4xl font-bold mb-4">Get in Touch</h1>
-          <p className="text-slate-600">
-            Have a project in mind? Let's talk.
-          </p>
-        </motion.div>
+        <h1 className="fade-in text-4xl md:text-5xl font-bold mb-4 text-white">Get in Touch</h1>
+        <p className="fade-in-1 text-secondary text-lg mb-16">
+          Have a project in mind or want to connect? Here&apos;s how to reach me.
+        </p>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-          className="bg-white border border-slate-200 rounded-2xl p-8"
-        >
-          {status === 'success' ? (
-            <div className="text-center py-8">
-              <div className="text-4xl mb-4">✓</div>
-              <h2 className="text-xl font-bold mb-2">Message Sent!</h2>
-              <p className="text-slate-600">I'll get back to you soon.</p>
+        <div className="fade-in-2 space-y-6">
+          <a
+            href="mailto:NB@noaberger.com"
+            className="flex items-center justify-between border border-white/10 rounded-xl p-6 bg-surface hover:border-teal/40 transition-colors duration-200 group"
+          >
+            <div>
+              <p className="text-sm text-secondary mb-1">Email</p>
+              <p className="text-white font-medium">NB@noaberger.com</p>
             </div>
-          ) : status === 'error' ? (
-            <div className="text-center py-8">
-              <div className="text-4xl mb-4">✗</div>
-              <h2 className="text-xl font-bold mb-2">Something went wrong</h2>
-              <p className="text-slate-600 mb-4">Please try again or email me directly.</p>
-              <button
-                onClick={() => setStatus('idle')}
-                className="text-primary-600 hover:underline text-sm"
-              >
-                Try again
-              </button>
-            </div>
-          ) : (
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div>
-                <label className="block text-sm font-medium mb-2">Name</label>
-                <input
-                  type="text"
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full border border-slate-300 rounded-lg px-4 py-3 focus:outline-none focus:border-primary-600"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium mb-2">Email</label>
-                <input
-                  type="email"
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="w-full border border-slate-300 rounded-lg px-4 py-3 focus:outline-none focus:border-primary-600"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium mb-2">Message</label>
-                <textarea
-                  value={formData.message}
-                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  rows={5}
-                  className="w-full border border-slate-300 rounded-lg px-4 py-3 focus:outline-none focus:border-primary-600 resize-none"
-                  required
-                />
-              </div>
-              <button
-                type="submit"
-                disabled={status === 'sending'}
-                className="w-full bg-primary-600 hover:bg-primary-700 text-white font-medium py-3 rounded-lg transition-colors disabled:opacity-50"
-              >
-                {status === 'sending' ? 'Sending...' : 'Send Message'}
-              </button>
-            </form>
-          )}
-        </motion.div>
+            <span className="text-secondary group-hover:text-teal transition-colors">→</span>
+          </a>
 
-        <div className="mt-12 text-center text-slate-600">
-          <p>Or email me directly at <a href="mailto:NB@noaberger.com" className="text-primary-600 hover:underline">NB@noaberger.com</a></p>
+          <Link
+            href="https://calendar.app.google/9HkGH8jzjx82fwfk8"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-between border border-white/10 rounded-xl p-6 bg-surface hover:border-teal/40 transition-colors duration-200 group"
+          >
+            <div>
+              <p className="text-sm text-secondary mb-1">Schedule a Call</p>
+              <p className="text-white font-medium">Book a 30-minute intro call</p>
+            </div>
+            <span className="text-secondary group-hover:text-teal transition-colors">→</span>
+          </Link>
+
+          <Link
+            href="https://www.linkedin.com/in/noabberger/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-between border border-white/10 rounded-xl p-6 bg-surface hover:border-teal/40 transition-colors duration-200 group"
+          >
+            <div>
+              <p className="text-sm text-secondary mb-1">LinkedIn</p>
+              <p className="text-white font-medium">linkedin.com/in/noabberger</p>
+            </div>
+            <span className="text-secondary group-hover:text-teal transition-colors">→</span>
+          </Link>
         </div>
       </div>
     </div>

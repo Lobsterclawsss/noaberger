@@ -7,20 +7,25 @@ import Footer from '@/components/Footer'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Noa Berger',
-  description: 'Growth consultant, developer, and entrepreneur. Founder of BLEUKEI.',
+  title: 'Noa Berger — Operator & Investor',
+  description: 'Operator and investor helping businesses grow through AI, automation, and smart systems. Founder of BLEUKEI.',
   metadataBase: new URL('https://noaberger.com'),
+  icons: {
+    icon: '/favicon.svg',
+  },
   openGraph: {
     type: 'website',
     url: 'https://noaberger.com',
-    title: 'Noa Berger',
-    description: 'Growth consultant, developer, and entrepreneur. Founder of BLEUKEI.',
+    title: 'Noa Berger — Operator & Investor',
+    description: 'Operator and investor helping businesses grow through AI, automation, and smart systems. Founder of BLEUKEI.',
     siteName: 'Noa Berger',
+    images: [{ url: '/og-image.svg', width: 1200, height: 630, alt: 'Noa Berger — Operator & Investor' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Noa Berger',
-    description: 'Growth consultant, developer, and entrepreneur. Founder of BLEUKEI.',
+    title: 'Noa Berger — Operator & Investor',
+    description: 'Operator and investor helping businesses grow through AI, automation, and smart systems. Founder of BLEUKEI.',
+    images: ['/og-image.svg'],
   },
   robots: {
     index: true,
@@ -35,10 +40,16 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} bg-slate-50 text-slate-900 min-h-screen`}>
+      <body className={`${inter.className} bg-black text-white min-h-screen`}>
         <Header />
         {children}
         <Footer />
+        {/* Cloudflare Web Analytics — replace YOUR_TOKEN after connecting in Cloudflare dashboard */}
+        <script
+          defer
+          src="https://static.cloudflareinsights.com/beacon.min.js"
+          data-cf-beacon='{"token": "YOUR_TOKEN"}'
+        />
       </body>
     </html>
   )
