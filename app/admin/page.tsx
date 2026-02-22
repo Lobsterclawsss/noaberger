@@ -213,16 +213,15 @@ export default function Admin() {
           <h2 className="text-xs font-semibold text-teal tracking-widest uppercase mb-4">Quick Links</h2>
           <div className="grid grid-cols-2 gap-3">
             {[
-              { label: 'Live Site', url: 'https://noaberger.com' },
-              { label: 'Pages Preview', url: 'https://noaberger.pages.dev' },
-              { label: 'GitHub Repo', url: 'https://github.com/Lobsterclawsss/noaberger' },
-              { label: 'CF Pages Dashboard', url: 'https://dash.cloudflare.com' },
+              { label: 'Live Site', url: 'https://noaberger.com', external: true },
+              { label: 'Agent Dashboard', url: '/dashboard', external: false },
+              { label: 'GitHub Repo', url: 'https://github.com/Lobsterclawsss/noaberger', external: true },
+              { label: 'CF Pages', url: 'https://dash.cloudflare.com', external: true },
             ].map((link) => (
               <a
                 key={link.url}
                 href={link.url}
-                target="_blank"
-                rel="noopener noreferrer"
+                {...(link.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
                 className="border border-white/10 rounded-lg px-4 py-3 bg-surface hover:border-teal/30 transition-colors text-white text-sm"
               >
                 {link.label} →
