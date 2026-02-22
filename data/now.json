@@ -1,9 +1,21 @@
 {
   "updatedAt": "Feb 2026",
   "items": [
-    { "text": "Scaling BLEUKEI to 100+ local business clients", "date": "Feb 2026" },
-    { "text": "Launching noaberger.com — going live on Cloudflare Pages", "date": "Feb 2026" },
-    { "text": "Running OpenClaw — multi-agent AI platform automating operations", "date": "Ongoing" },
-    { "text": "Identifying early-stage operators to back as an angel investor", "date": "Ongoing" }
+    {
+      "text": "Scaling BLEUKEI to 100+ local business clients",
+      "date": "Feb 2026"
+    },
+    {
+      "text": "noaberger.com is live — building in public on Cloudflare Pages",
+      "date": "Feb 2026"
+    },
+    {
+      "text": "Running OpenClaw — multi-agent AI platform automating operations",
+      "date": "Ongoing"
+    },
+    {
+      "text": "Identifying early-stage operators to back as an angel investor",
+      "date": "Ongoing"
+    }
   ]
 }
