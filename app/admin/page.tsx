@@ -130,14 +130,22 @@ export default function Admin() {
         <section className="mb-10">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-xs font-semibold text-teal tracking-widest uppercase">Now Section</h2>
-            <a
-              href={`${GITHUB_BASE}/data/now.json`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-secondary hover:text-teal text-xs transition-colors"
-            >
-              Edit on GitHub →
-            </a>
+            <div className="flex gap-4">
+              <a
+                href="obsidian://open?vault=Obsidian%20Vault&file=Now"
+                className="text-secondary hover:text-teal text-xs transition-colors"
+              >
+                Edit in Obsidian →
+              </a>
+              <a
+                href={`${GITHUB_BASE}/data/now.json`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-secondary hover:text-teal text-xs transition-colors"
+              >
+                GitHub →
+              </a>
+            </div>
           </div>
           <div className="border border-white/10 rounded-xl overflow-hidden">
             {nowData.items.map((item, i) => (
@@ -154,8 +162,8 @@ export default function Admin() {
             ))}
           </div>
           <p className="text-secondary text-xs mt-2">
-            Updated: {nowData.updatedAt} · Or create{' '}
-            <span className="font-mono">Now.md</span> in Obsidian vault → Deploy to sync
+            Updated: {nowData.updatedAt} · Edit{' '}
+            <span className="font-mono">Now.md</span> in Obsidian → Deploy to sync
           </p>
         </section>
 
