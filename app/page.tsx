@@ -1,4 +1,7 @@
+'use client';
+
 import Link from 'next/link';
+import ScrollReveal from '@/components/ScrollReveal';
 
 const Home = () => {
   return (
@@ -48,7 +51,9 @@ const Home = () => {
       {/* Currently Building */}
       <section className="py-16 px-6 bg-surface">
         <div className="container mx-auto max-w-4xl">
-          <h2 className="text-2xl font-bold mb-8 text-white">Currently Building</h2>
+          <ScrollReveal y={16}>
+            <h2 className="text-2xl font-bold mb-8 text-white">Currently Building</h2>
+          </ScrollReveal>
           <div className="grid md:grid-cols-3 gap-6">
             {[
               {
@@ -66,14 +71,13 @@ const Home = () => {
                 desc: 'Personal systems and life optimization. The infrastructure behind the work.',
                 link: '#',
               },
-            ].map((project) => (
-              <div
-                key={project.name}
-                className="border border-white/10 rounded-xl p-6 bg-elevated hover:border-teal/40 transition-colors duration-200"
-              >
-                <h3 className="font-bold text-lg mb-2 text-white">{project.name}</h3>
-                <p className="text-secondary text-sm leading-relaxed">{project.desc}</p>
-              </div>
+            ].map((project, i) => (
+              <ScrollReveal key={project.name} delay={i * 0.12} y={24}>
+                <div className="border border-white/10 rounded-xl p-6 bg-elevated hover:border-teal/40 transition-colors duration-200 h-full">
+                  <h3 className="font-bold text-lg mb-2 text-white">{project.name}</h3>
+                  <p className="text-secondary text-sm leading-relaxed">{project.desc}</p>
+                </div>
+              </ScrollReveal>
             ))}
           </div>
         </div>
