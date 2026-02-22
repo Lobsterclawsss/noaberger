@@ -8,9 +8,8 @@ import { CLIENTS } from '@/app/clients/data';
 // node -e "const c=require('crypto');console.log(c.createHash('sha256').update('YOUR_NEW_PASSWORD').digest('hex'))"
 const ADMIN_HASH = '401b4d6c69937db32ae45f66b66af19ffc54e07146549bec2ea564b190352156';
 
-// Cloudflare Pages deploy hook — triggers a rebuild
-const DEPLOY_HOOK =
-  'https://api.cloudflare.com/client/v4/pages/webhooks/deploy_hooks/8ee21b37-60f4-4e94-a3d3-5ab2235bdec8';
+// Deploy endpoint — proxied via CF Pages Function (hook URL stored server-side as CF_DEPLOY_HOOK secret)
+const DEPLOY_ENDPOINT = '/api/deploy';
 
 const GITHUB_BASE = 'https://github.com/Lobsterclawsss/noaberger/edit/master';
 
@@ -47,7 +46,7 @@ export default function Admin() {
   async function triggerDeploy() {
     setDeployStatus('loading');
     try {
-      const res = await fetch(DEPLOY_HOOK, { method: 'POST' });
+      const res = await fetch(DEPLOY_ENDPOINT, { method: 'POST' });
       setDeployStatus(res.ok ? 'done' : 'error');
     } catch {
       setDeployStatus('error');
@@ -209,7 +208,7 @@ export default function Admin() {
               { label: 'Live Site', url: 'https://noaberger.com' },
               { label: 'Pages Preview', url: 'https://noaberger.pages.dev' },
               { label: 'GitHub Repo', url: 'https://github.com/Lobsterclawsss/noaberger' },
-              { label: 'CF Pages Dashboard', url: 'https://dash.cloudflare.com/69ab581d9143af7a772f30e2af7f1812/pages/view/noaberger' },
+              { label: 'CF Pages Dashboard', url: 'https://dash.cloudflare.com' },
             ].map((link) => (
               <a
                 key={link.url}

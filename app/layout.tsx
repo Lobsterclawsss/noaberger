@@ -44,12 +44,6 @@ export default function RootLayout({
         <Header />
         {children}
         <Footer />
-        {/* Cloudflare Web Analytics — replace YOUR_TOKEN after connecting in Cloudflare dashboard */}
-        <script
-          defer
-          src="https://static.cloudflareinsights.com/beacon.min.js"
-          data-cf-beacon='{"token": "YOUR_TOKEN"}'
-        />
       </body>
     </html>
   )

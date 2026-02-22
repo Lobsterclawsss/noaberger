@@ -36,7 +36,7 @@ export const CLIENTS: Client[] = [
   // ── EXAMPLE CLIENT ──────────────────────────────────────────────
   // Remove or replace this with real clients
   {
-    token: 'example-abc123',
+    token: 'f3a8c2d7-9b14-4e61-a059-7c3d8f120e44',
     name: 'Alex',
     greeting: "Here's where things stand on your project.",
     projects: [
@@ -61,7 +61,7 @@ export const CLIENTS: Client[] = [
 
   // ── EXAMPLE FRIEND ──────────────────────────────────────────────
   {
-    token: 'friend-jake22',
+    token: 'b91e4f73-2c6a-4d08-8b3e-5a9f7e203c17',
     name: 'Jake',
     greeting: "Dropping some stuff here so you can follow along.",
     projects: [
