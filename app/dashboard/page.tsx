@@ -2,6 +2,11 @@
 
 import { useState, useEffect, useRef } from 'react';
 import gsap from 'gsap';
+import TerminalLogStream from './components/TerminalLogStream';
+import RadialHeatmap from './components/RadialHeatmap';
+import ModelUsageRings from './components/ModelUsageRings';
+import ProjectsPanel from './components/ProjectsPanel';
+import BudgetBars from './components/BudgetBars';
 
 // SHA-256 of 'bleukei2026'
 const ADMIN_HASH = '401b4d6c69937db32ae45f66b66af19ffc54e07146549bec2ea564b190352156';
@@ -492,11 +497,13 @@ function AgentComms({ hub }: { hub: HubData | null }) {
 }
 
 // ─── Main Dashboard ───────────────────────────────────────────────────────────
-type TabKey = 'agents' | 'activity' | 'tasks' | 'costs' | 'github' | 'handoffs';
+type TabKey = 'agents' | 'projects' | 'activity' | 'tasks' | 'costs' | 'budget' | 'github' | 'handoffs';
 
 const TABS: { key: TabKey; label: string }[] = [
   { key: 'agents',   label: 'Agents'   },
+  { key: 'projects', label: 'Projects' },
   { key: 'tasks',    label: 'Tasks'    },
+  { key: 'budget',   label: 'Budget'   },
   { key: 'costs',    label: 'Costs'    },
   { key: 'github',   label: 'GitHub'   },
   { key: 'handoffs', label: 'Comms'    },
@@ -672,7 +679,10 @@ export default function Dashboard() {
               </div>
             )}
 
+            {activeTab === 'projects' && <ProjectsPanel />}
+
             {activeTab === 'tasks'    && <TaskKanban    hub={hub} />}
+            {activeTab === 'budget'   && <BudgetBars />}
             {activeTab === 'costs'    && <CostTracker   hub={hub} />}
             {activeTab === 'github'   && <GitHubStatus  hub={hub} />}
             {activeTab === 'handoffs' && <AgentComms    hub={hub} />}
@@ -716,7 +726,15 @@ export default function Dashboard() {
           </div>
         </div>
 
+        {/* New Dashboard Features Section */}
+        <div className="mt-6 grid md:grid-cols-3 gap-4">
+          <TerminalLogStream hub={hub} />
+          <RadialHeatmap hub={hub} />
+          <ModelUsageRings hub={hub} />
+        </div>
+
       </div>
     </div>
   );
 }
+

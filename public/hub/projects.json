@@ -1,0 +1,315 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "2026-02-23T18:31:47.375Z",
+  "source": "notion",
+  "stats": {
+    "totalProjects": 3,
+    "totalChapters": 7,
+    "totalTasks": 10,
+    "activeProjects": 3,
+    "completedProjects": 0
+  },
+  "projects": [
+    {
+      "id": "3108de28-4c52-8151-bc6f-c6eebf3cae91",
+      "name": "BLEUKEI E-commerce Platform",
+      "statusPercent": 0.65,
+      "status": "In Progress",
+      "statusColor": "#3b82f6",
+      "budgetTotal": 15000,
+      "budgetSpent": 8750,
+      "agentOwner": "Agency Leader",
+      "agentEmoji": "⚙️",
+      "client": "BLEUKEI",
+      "priority": "High",
+      "dueDate": "2026-03-15",
+      "chapterIds": [
+        "3108de28-4c52-8167-9adc-e0195e305118",
+        "3108de28-4c52-81fd-b6ea-ef28a8dde07f",
+        "3108de28-4c52-819d-b6ce-f85a2112cddb"
+      ],
+      "chapters": [
+        {
+          "id": "3108de28-4c52-8167-9adc-e0195e305118",
+          "name": "Phase 1: Discovery & Planning",
+          "projectIds": [
+            "3108de28-4c52-8151-bc6f-c6eebf3cae91"
+          ],
+          "statusPercent": 1,
+          "status": "Complete",
+          "statusColor": "#22c55e",
+          "estimatedHours": 20,
+          "actualHours": 18,
+          "order": 1,
+          "tasks": [],
+          "cost": 0
+        },
+        {
+          "id": "3108de28-4c52-81fd-b6ea-ef28a8dde07f",
+          "name": "Phase 2: Design System",
+          "projectIds": [
+            "3108de28-4c52-8151-bc6f-c6eebf3cae91"
+          ],
+          "statusPercent": 0.85,
+          "status": "In Progress",
+          "statusColor": "#3b82f6",
+          "estimatedHours": 40,
+          "actualHours": 35,
+          "order": 2,
+          "tasks": [
+            {
+              "id": "3108de28-4c52-8150-bb84-c89879518f2d",
+              "name": "Create color palette",
+              "chapterIds": [
+                "3108de28-4c52-81fd-b6ea-ef28a8dde07f"
+              ],
+              "agent": "Bleukei Leader",
+              "agentEmoji": "🎨",
+              "status": "Done",
+              "statusColor": "#22c55e",
+              "estimatedTime": 4,
+              "actualTime": 3.5,
+              "cost": 15,
+              "priority": "High"
+            },
+            {
+              "id": "3108de28-4c52-8159-8785-e23688e5e400",
+              "name": "Typography system",
+              "chapterIds": [
+                "3108de28-4c52-81fd-b6ea-ef28a8dde07f"
+              ],
+              "agent": "Bleukei Leader",
+              "agentEmoji": "🎨",
+              "status": "Done",
+              "statusColor": "#22c55e",
+              "estimatedTime": 6,
+              "actualTime": 5,
+              "cost": 25,
+              "priority": "Normal"
+            },
+            {
+              "id": "3108de28-4c52-81e1-a645-df2f70ad5184",
+              "name": "Design component library",
+              "chapterIds": [
+                "3108de28-4c52-81fd-b6ea-ef28a8dde07f"
+              ],
+              "agent": "Agency Leader",
+              "agentEmoji": "⚙️",
+              "status": "In Progress",
+              "statusColor": "#3b82f6",
+              "estimatedTime": 16,
+              "actualTime": 12,
+              "cost": 120,
+              "priority": "Critical"
+            }
+          ],
+          "cost": 160
+        },
+        {
+          "id": "3108de28-4c52-819d-b6ce-f85a2112cddb",
+          "name": "Phase 3: Development",
+          "projectIds": [
+            "3108de28-4c52-8151-bc6f-c6eebf3cae91"
+          ],
+          "statusPercent": 0.4,
+          "status": "In Progress",
+          "statusColor": "#3b82f6",
+          "estimatedHours": 80,
+          "actualHours": 25,
+          "order": 3,
+          "tasks": [],
+          "cost": 0
+        }
+      ],
+      "totalTasks": 3,
+      "completedTasks": 2,
+      "totalCost": 160,
+      "budgetRemaining": 6250
+    },
+    {
+      "id": "3108de28-4c52-8183-a68d-d771a71d03c8",
+      "name": "AZUL Mobile App",
+      "statusPercent": 0.3,
+      "status": "In Progress",
+      "statusColor": "#3b82f6",
+      "budgetTotal": 25000,
+      "budgetSpent": 5000,
+      "agentOwner": "Azul Leader",
+      "agentEmoji": "💙",
+      "client": "Personal",
+      "priority": "Normal",
+      "dueDate": "2026-04-01",
+      "chapterIds": [],
+      "chapters": [],
+      "totalTasks": 0,
+      "completedTasks": 0,
+      "totalCost": 0,
+      "budgetRemaining": 20000
+    },
+    {
+      "id": "openclaw-ai-ops-2026",
+      "name": "OpenClaw AI Infrastructure",
+      "statusPercent": 0.5,
+      "status": "In Progress",
+      "statusColor": "#0683a1",
+      "budgetTotal": 50,
+      "budgetSpent": 34.53,
+      "agentOwner": "Claude Code",
+      "agentEmoji": "🦞",
+      "client": "Internal",
+      "priority": "High",
+      "dueDate": null,
+      "chapterIds": [
+        "openclaw-ch-gateway",
+        "openclaw-ch-dashboard",
+        "openclaw-ch-integrations"
+      ],
+      "chapters": [
+        {
+          "id": "openclaw-ch-gateway",
+          "name": "Gateway & Agent Setup",
+          "projectIds": ["openclaw-ai-ops-2026"],
+          "statusPercent": 1,
+          "status": "Complete",
+          "statusColor": "#22c55e",
+          "estimatedHours": 8,
+          "actualHours": 10,
+          "order": 1,
+          "tasks": [
+            {
+              "id": "openclaw-t-node-downgrade",
+              "name": "Node 22 downgrade + libuv fix",
+              "chapterIds": ["openclaw-ch-gateway"],
+              "agent": "Claude Code",
+              "agentEmoji": "💻",
+              "status": "Done",
+              "statusColor": "#22c55e",
+              "estimatedTime": 2,
+              "actualTime": 3,
+              "cost": 2.10,
+              "dueDate": "2026-02-22",
+              "priority": "Critical"
+            },
+            {
+              "id": "openclaw-t-reasoning-bug",
+              "name": "kimi-k2.5 reasoning/reasoning_effort 400 fix",
+              "chapterIds": ["openclaw-ch-gateway"],
+              "agent": "Claude Code",
+              "agentEmoji": "💻",
+              "status": "Done",
+              "statusColor": "#22c55e",
+              "estimatedTime": 1,
+              "actualTime": 1,
+              "cost": 1.20,
+              "dueDate": "2026-02-23",
+              "priority": "Critical"
+            },
+            {
+              "id": "openclaw-t-pm2-setup",
+              "name": "PM2 gateway setup + health check cron",
+              "chapterIds": ["openclaw-ch-gateway"],
+              "agent": "Claude Code",
+              "agentEmoji": "💻",
+              "status": "Done",
+              "statusColor": "#22c55e",
+              "estimatedTime": 2,
+              "actualTime": 2,
+              "cost": 1.80,
+              "dueDate": "2026-02-22",
+              "priority": "High"
+            }
+          ],
+          "cost": 5.10
+        },
+        {
+          "id": "openclaw-ch-dashboard",
+          "name": "noaberger.com Dashboard",
+          "projectIds": ["openclaw-ai-ops-2026"],
+          "statusPercent": 0.85,
+          "status": "In Progress",
+          "statusColor": "#3b82f6",
+          "estimatedHours": 12,
+          "actualHours": 14,
+          "order": 2,
+          "tasks": [
+            {
+              "id": "openclaw-t-dashboard-launch",
+              "name": "Agent Control Center launch + CI fix",
+              "chapterIds": ["openclaw-ch-dashboard"],
+              "agent": "Claude Code",
+              "agentEmoji": "💻",
+              "status": "Done",
+              "statusColor": "#22c55e",
+              "estimatedTime": 4,
+              "actualTime": 5,
+              "cost": 4.50,
+              "dueDate": "2026-02-22",
+              "priority": "High"
+            },
+            {
+              "id": "openclaw-t-routing-fix",
+              "name": "Cloudflare Pages routing fix (/dashboard, /hub)",
+              "chapterIds": ["openclaw-ch-dashboard"],
+              "agent": "Claude Code",
+              "agentEmoji": "💻",
+              "status": "Done",
+              "statusColor": "#22c55e",
+              "estimatedTime": 1,
+              "actualTime": 1,
+              "cost": 0.80,
+              "dueDate": "2026-02-23",
+              "priority": "Critical"
+            },
+            {
+              "id": "openclaw-t-budget-viz",
+              "name": "Phase 2: Time tracking + budget visualization",
+              "chapterIds": ["openclaw-ch-dashboard"],
+              "agent": "Claude Code",
+              "agentEmoji": "💻",
+              "status": "In Progress",
+              "statusColor": "#3b82f6",
+              "estimatedTime": 3,
+              "actualTime": null,
+              "cost": null,
+              "dueDate": "2026-02-23",
+              "priority": "High"
+            }
+          ],
+          "cost": 5.30
+        },
+        {
+          "id": "openclaw-ch-integrations",
+          "name": "Integrations & Pipelines",
+          "projectIds": ["openclaw-ai-ops-2026"],
+          "statusPercent": 0.15,
+          "status": "In Progress",
+          "statusColor": "#3b82f6",
+          "estimatedHours": 20,
+          "actualHours": 4,
+          "order": 3,
+          "tasks": [
+            {
+              "id": "openclaw-t-8skills",
+              "name": "8 skills installed: notion, github, gmail, etc.",
+              "chapterIds": ["openclaw-ch-integrations"],
+              "agent": "Claude Code",
+              "agentEmoji": "💻",
+              "status": "Done",
+              "statusColor": "#22c55e",
+              "estimatedTime": 4,
+              "actualTime": 4,
+              "cost": 3.20,
+              "dueDate": "2026-02-19",
+              "priority": "High"
+            }
+          ],
+          "cost": 3.20
+        }
+      ],
+      "totalTasks": 7,
+      "completedTasks": 5,
+      "totalCost": 13.60,
+      "budgetRemaining": 15.47
+    }
+  ]
+}
