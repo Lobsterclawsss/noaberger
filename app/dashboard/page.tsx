@@ -61,6 +61,10 @@ type HubData = {
     monthlyLimit: number;
     byAgent: Record<string, number>;
     alerts: string[];
+    trackingNote?: string;
+    byokNote?: string;
+    openRouterUsageTotal?: number;
+    openRouterLastSync?: string;
   };
   github: {
     lastSync: string;
@@ -323,6 +327,18 @@ function CostTracker({ hub }: { hub: HubData | null }) {
       {costs.alerts.length > 0 && (
         <div className="border border-orange-400/30 rounded-lg px-4 py-3 bg-orange-400/5">
           {costs.alerts.map((a, i) => <p key={i} className="text-orange-400 text-xs">{a}</p>)}
+        </div>
+      )}
+
+      {(costs.byokNote || costs.trackingNote) && (
+        <div className="border border-yellow-400/25 rounded-lg px-4 py-3 bg-yellow-400/5 space-y-1">
+          <p className="text-yellow-400 text-xs font-semibold uppercase tracking-wider">⚠ BYOK Tracking Gap</p>
+          {costs.trackingNote && (
+            <p className="text-yellow-300/80 text-xs leading-relaxed">{costs.trackingNote}</p>
+          )}
+          {costs.openRouterUsageTotal != null && (
+            <p className="text-yellow-300/60 text-xs font-mono">OpenRouter total: ${costs.openRouterUsageTotal.toFixed(4)}</p>
+          )}
         </div>
       )}
     </div>

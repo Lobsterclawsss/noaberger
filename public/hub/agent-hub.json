@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "lastUpdated": "2026-02-23T00:15:36.669Z",
+  "lastUpdated": "2026-02-23T05:21:52.669Z",
   "updatedBy": "sync-github",
   "system": {
     "mode": "production",
@@ -12,7 +12,7 @@
   },
   "tasks": {
     "source": "ACTIVE_TASKS.md",
-    "lastSync": "2026-02-22T18:00:00Z",
+    "lastSync": "2026-02-23T05:30:00Z",
     "overdue": [],
     "dueThisWeek": [
       {
@@ -21,36 +21,49 @@
         "owner": "Noa",
         "due": "2026-02-22",
         "context": "noaberger.com"
-      },
-      {
-        "id": "00000010-0000-0000-0000-000000000016",
-        "name": "Connect bleukei.com DNS to Cloudflare Pages",
-        "owner": "Noa",
-        "due": "2026-02-22",
-        "context": "BLEUKEI website"
       }
     ],
     "inProgress": [
-      {
-        "id": "0000000c-0000-0000-0000-000000000012",
-        "name": "Get Groq API key for Whisper transcription",
-        "owner": "Noa",
-        "due": "TBD",
-        "context": "OpenClaw ops"
-      },
-      {
-        "id": "0000000d-0000-0000-0000-000000000013",
-        "name": "Restart gateway to reload new skills in memory",
-        "owner": "Noa",
-        "due": "TBD",
-        "context": "OpenClaw ops"
-      },
       {
         "id": "00000001-0000-0000-0000-000000000001",
         "name": "Enable Discord Message Content Intent",
         "owner": "Noa",
         "due": "TBD",
         "context": "Discord setup"
+      }
+    ],
+    "eventual": [
+      {
+        "id": "heygen-integration-eventual",
+        "name": "HeyGen Integration",
+        "owner": "Claude Code",
+        "due": "When key arrives",
+        "context": "Video pipeline",
+        "spec": "workspace/integrations/heygen-integration-spec.md"
+      },
+      {
+        "id": "elevenlabs-integration-eventual",
+        "name": "ElevenLabs Integration",
+        "owner": "Claude Code",
+        "due": "When key arrives",
+        "context": "Voice pipeline",
+        "spec": "workspace/integrations/elevenlabs-integration-spec.md"
+      },
+      {
+        "id": "cold-outreach-pipeline-eventual",
+        "name": "Cold Outreach Pipeline",
+        "owner": "Claude Code",
+        "due": "When ready",
+        "context": "Growth",
+        "spec": "workspace/integrations/cold-outreach-pipeline.md"
+      },
+      {
+        "id": "video-clone-pipeline-eventual",
+        "name": "Video Clone Pipeline (30 videos/month)",
+        "owner": "Claude Code",
+        "due": "After HeyGen + ElevenLabs",
+        "context": "Content",
+        "spec": "workspace/integrations/video-clone-pipeline.md"
       }
     ],
     "blocked": [
@@ -127,17 +140,21 @@
       "claude-code": 0,
       "antigravity": 0
     },
-    "alerts": []
+    "alerts": [],
+    "trackingNote": "Direct OpenRouter charges only. BYOK inference via Google AI Studio (Gemini models) is not billed through OpenRouter — cost_total=0 for all BYOK calls. True daily cost estimated $3–15.",
+    "byokNote": "BYOK gap detected: 2,138 API calls on 2026-02-12 show cost_total=0 but byok_usage_inference contains real token data. Dashboard intentionally undercounts until BYOK cost API is wired.",
+    "openRouterUsageTotal": 34.52649863,
+    "openRouterLastSync": "2026-02-23T05:21:52.668Z"
   },
   "github": {
-    "lastSync": "2026-02-23T00:15:36.660Z",
+    "lastSync": "2026-02-23T05:21:52.170Z",
     "repositories": [
       {
         "name": "noaberger",
         "owner": "Lobsterclawsss",
         "openIssues": 0,
         "openPRs": 0,
-        "lastCommit": "2026-02-22",
+        "lastCommit": "2026-02-23",
         "ciStatus": "passing"
       },
       {
@@ -145,12 +162,36 @@
         "owner": "Lobsterclawsss",
         "openIssues": 0,
         "openPRs": 0,
-        "lastCommit": "2026-02-22",
-        "ciStatus": "failing"
+        "lastCommit": "2026-02-23",
+        "ciStatus": "passing"
       }
     ]
   },
   "activity": [
+    {
+      "timestamp": "2026-02-23T05:30:00Z",
+      "agent": "claude-code",
+      "action": "Integration readiness session complete: runner fixed, CI fixed, 6 integration specs created, cost tracking updated",
+      "type": "milestone"
+    },
+    {
+      "timestamp": "2026-02-23T05:20:00Z",
+      "agent": "claude-code",
+      "action": "brian-brain-backup CI fixed: paths corrected, skills audit repaired, Jest job non-blocking. CI now passing.",
+      "type": "success"
+    },
+    {
+      "timestamp": "2026-02-23T05:10:00Z",
+      "agent": "claude-code",
+      "action": "Cost tracking updated: BYOK gap documented, CostTracker component shows warning badge, OpenRouter fetch added to sync-github.js",
+      "type": "info"
+    },
+    {
+      "timestamp": "2026-02-23T05:00:00Z",
+      "agent": "claude-code",
+      "action": "Runner hardened: dedup fix, blocked-task skip, log rotation added. work-queue.json stale claims cleared.",
+      "type": "success"
+    },
     {
       "timestamp": "2026-02-23T00:20:00Z",
       "agent": "claude-code",
