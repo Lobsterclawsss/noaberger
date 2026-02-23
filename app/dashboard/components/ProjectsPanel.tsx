@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import EstimateConfidence from './EstimateConfidence';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -65,6 +65,19 @@ interface ProjectsData {
     completedProjects: number;
   };
   projects: Project[];
+}
+
+interface EditingState {
+  projectId: string | null;
+  chapterId: string | null;
+  taskId: string | null;
+  field: string | null;
+  value: string | number;
+}
+
+interface ActiveTimer {
+  taskId: string;
+  startedAt: string;
 }
 
 // ─── Progress Ring Component ──────────────────────────────────────────────────
@@ -188,10 +201,153 @@ function StatusBadge({ status, color }: { status: string; color: string }) {
   );
 }
 
-// ─── Task Row Component ───────────────────────────────────────────────────────
-function TaskRow({ task }: { task: Task }) {
+// ─── Progress Slider Component ────────────────────────────────────────────────
+function ProgressSlider({ 
+  value, 
+  onChange, 
+  onSave, 
+  color 
+}: { 
+  value: number; 
+  onChange: (val: number) => void;
+  onSave: () => void;
+  color: string;
+}) {
+  const percent = Math.round(value * 100);
+  
   return (
-    <div className="flex items-center gap-3 px-3 py-2 hover:bg-white/[0.02] rounded-lg transition-colors">
+    <div className="flex items-center gap-2">
+      <input
+        type="range"
+        min="0"
+        max="100"
+        value={percent}
+        onChange={(e) => onChange(Number(e.target.value) / 100)}
+        onMouseUp={onSave}
+        onTouchEnd={onSave}
+        className="flex-1 h-1 bg-white/10 rounded-lg appearance-none cursor-pointer"
+        style={{
+          background: `linear-gradient(to right, ${color} ${percent}%, rgba(255,255,255,0.1) ${percent}%)`
+        }}
+      />
+      <span className="text-white text-xs font-mono w-10 text-right">{percent}%</span>
+    </div>
+  );
+}
+
+// ─── Inline Edit Field Component ──────────────────────────────────────────────
+function InlineEditField({
+  value,
+  type = 'text',
+  onSave,
+  onCancel,
+  options
+}: {
+  value: string | number;
+  type?: 'text' | 'number' | 'select';
+  onSave: (val: string | number) => void;
+  onCancel: () => void;
+  options?: string[];
+}) {
+  const [editValue, setEditValue] = useState(value);
+  
+  const handleSave = () => {
+    onSave(type === 'number' ? Number(editValue) : editValue);
+  };
+  
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') handleSave();
+    if (e.key === 'Escape') onCancel();
+  };
+  
+  if (type === 'select' && options) {
+    return (
+      <div className="flex items-center gap-2">
+        <select
+          value={editValue}
+          onChange={(e) => setEditValue(e.target.value)}
+          className="bg-elevated border border-white/20 rounded px-2 py-1 text-white text-xs"
+          autoFocus
+        >
+          {options.map(opt => (
+            <option key={opt} value={opt}>{opt}</option>
+          ))}
+        </select>
+        <button onClick={handleSave} className="text-mint text-xs">✓</button>
+        <button onClick={onCancel} className="text-red-400 text-xs">✕</button>
+      </div>
+    );
+  }
+  
+  return (
+    <div className="flex items-center gap-2">
+      <input
+        type={type}
+        value={editValue}
+        onChange={(e) => setEditValue(e.target.value)}
+        onKeyDown={handleKeyDown}
+        className="bg-elevated border border-white/20 rounded px-2 py-1 text-white text-xs w-24"
+        autoFocus
+      />
+      <button onClick={handleSave} className="text-mint text-xs">✓</button>
+      <button onClick={onCancel} className="text-red-400 text-xs">✕</button>
+    </div>
+  );
+}
+
+// ─── Task Row Component ───────────────────────────────────────────────────────
+function TaskRow({ 
+  task, 
+  isEditing,
+  onEdit,
+  onUpdate,
+  activeTimer,
+  onStartTimer,
+  onCompleteTask,
+  authToken
+}: { 
+  task: Task;
+  isEditing: boolean;
+  onEdit: (field: string, value: string | number) => void;
+  onUpdate: (updates: Partial<Task>) => void;
+  activeTimer: ActiveTimer | null;
+  onStartTimer: (taskId: string) => void;
+  onCompleteTask: (taskId: string, startedAt?: string) => void;
+  authToken: string;
+}) {
+  const [isUpdating, setIsUpdating] = useState(false);
+  const hasActiveTimer = activeTimer?.taskId === task.id;
+  
+  const handleUpdate = async (updates: Partial<Task>) => {
+    setIsUpdating(true);
+    try {
+      // Convert to Notion property format
+      const properties: Record<string, unknown> = {};
+      if (updates.status)                properties['Status']              = { select: { name: updates.status } };
+      if (updates.actualTime  != null)   properties['Actual Time (hrs)'] = { number: updates.actualTime };
+      if (updates.cost        != null)   properties['Cost']           = { number: updates.cost };
+      if (Object.keys(properties).length === 0) { onUpdate(updates); return; }
+
+      const res = await fetch('/api/notion/update', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-Auth-Hash': authToken },
+        body: JSON.stringify({ pageId: task.id, properties }),
+      });
+      if (res.ok) onUpdate(updates);
+    } catch (err) {
+      console.error('Failed to update task:', err);
+    } finally {
+      setIsUpdating(false);
+    }
+  };
+  
+  const handleComplete = async () => {
+    const startedAt = hasActiveTimer ? activeTimer.startedAt : undefined;
+    await onCompleteTask(task.id, startedAt);
+  };
+  
+  return (
+    <div className={`flex items-center gap-3 px-3 py-2 hover:bg-white/[0.02] rounded-lg transition-colors ${isUpdating ? 'opacity-50' : ''}`}>
       <AgentAvatar emoji={task.agentEmoji} name={task.agent} />
       <div className="flex-1 min-w-0">
         <p className="text-white text-xs truncate">{task.name}</p>
@@ -206,13 +362,71 @@ function TaskRow({ task }: { task: Task }) {
           )}
         </div>
       </div>
-      <div className="flex items-center gap-3">
-        <StatusBadge status={task.status} color={task.statusColor} />
-        {task.cost && (
-          <span className="text-[10px] text-mint font-mono">${task.cost}</span>
+      <div className="flex items-center gap-2">
+        {/* Status with inline edit */}
+        {isEditing ? (
+          <select
+            value={task.status}
+            onChange={(e) => handleUpdate({ status: e.target.value })}
+            className="bg-elevated border border-white/20 rounded px-1 py-0.5 text-[10px] text-white"
+          >
+            <option value="Not Started">Not Started</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Review">Review</option>
+            <option value="Done">Done</option>
+            <option value="On Hold">On Hold</option>
+            <option value="Blocked">Blocked</option>
+          </select>
+        ) : (
+          <StatusBadge status={task.status} color={task.statusColor} />
         )}
-        {task.actualTime && (
+        
+        {/* Cost */}
+        {isEditing ? (
+          <input
+            type="number"
+            value={task.cost || ''}
+            onChange={(e) => handleUpdate({ cost: Number(e.target.value) })}
+            className="bg-elevated border border-white/20 rounded px-1 py-0.5 text-[10px] text-white w-12"
+            placeholder="$"
+          />
+        ) : task.cost ? (
+          <span className="text-[10px] text-mint font-mono">${task.cost}</span>
+        ) : null}
+        
+        {/* Actual Time */}
+        {isEditing ? (
+          <input
+            type="number"
+            value={task.actualTime || ''}
+            onChange={(e) => handleUpdate({ actualTime: Number(e.target.value) })}
+            className="bg-elevated border border-white/20 rounded px-1 py-0.5 text-[10px] text-white w-12"
+            placeholder="h"
+            step="0.1"
+          />
+        ) : task.actualTime ? (
           <span className="text-[10px] text-secondary">{task.actualTime}h</span>
+        ) : null}
+        
+        {/* Timer / Complete buttons */}
+        {task.status !== 'Done' && (
+          <>
+            {hasActiveTimer ? (
+              <button
+                onClick={handleComplete}
+                className="text-[10px] bg-mint/20 text-mint px-2 py-0.5 rounded hover:bg-mint/30 transition-colors"
+              >
+                Stop & Complete
+              </button>
+            ) : (
+              <button
+                onClick={() => onStartTimer(task.id)}
+                className="text-[10px] bg-teal/20 text-teal px-2 py-0.5 rounded hover:bg-teal/30 transition-colors"
+              >
+                Start
+              </button>
+            )}
+          </>
         )}
       </div>
     </div>
@@ -223,14 +437,57 @@ function TaskRow({ task }: { task: Task }) {
 function ChapterRow({ 
   chapter, 
   isExpanded, 
-  onToggle 
+  onToggle,
+  isEditing,
+  onUpdate,
+  authToken,
+  activeTimer,
+  onStartTimer,
+  onCompleteTask
 }: { 
   chapter: Chapter; 
   isExpanded: boolean;
   onToggle: () => void;
+  isEditing: boolean;
+  onUpdate: (updates: Partial<Chapter>) => void;
+  authToken: string;
+  activeTimer: ActiveTimer | null;
+  onStartTimer: (taskId: string) => void;
+  onCompleteTask: (taskId: string, startedAt?: string) => void;
 }) {
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [localStatusPercent, setLocalStatusPercent] = useState(chapter.statusPercent);
+  
+  const handleUpdate = async (updates: Partial<Chapter>) => {
+    setIsUpdating(true);
+    try {
+      const properties: Record<string, unknown> = {};
+      if (updates.status !== undefined)       properties['Status']   = { select: { name: updates.status } };
+      if (updates.statusPercent !== undefined) properties['Progress'] = { number: Math.round(updates.statusPercent * 100) };
+      if (Object.keys(properties).length === 0) { onUpdate(updates); return; }
+
+      const res = await fetch('/api/notion/update', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-Auth-Hash': authToken },
+        body: JSON.stringify({ pageId: chapter.id, properties }),
+      });
+
+      if (res.ok) {
+        onUpdate(updates);
+      }
+    } catch (err) {
+      console.error('Failed to update chapter:', err);
+    } finally {
+      setIsUpdating(false);
+    }
+  };
+  
+  const handleProgressSave = () => {
+    handleUpdate({ statusPercent: localStatusPercent });
+  };
+  
   return (
-    <div className="border border-white/6 rounded-lg overflow-hidden">
+    <div className={`border border-white/6 rounded-lg overflow-hidden ${isUpdating ? 'opacity-50' : ''}`}>
       {/* Chapter Header */}
       <button 
         onClick={onToggle}
@@ -250,12 +507,26 @@ function ChapterRow({
             )}
           </div>
         </div>
-        <ProgressRing 
-          progress={chapter.statusPercent} 
-          size={36} 
-          strokeWidth={3}
-          color={chapter.statusColor}
-        />
+        
+        {/* Progress with slider when editing */}
+        {isEditing ? (
+          <div className="w-24">
+            <ProgressSlider
+              value={localStatusPercent}
+              onChange={setLocalStatusPercent}
+              onSave={handleProgressSave}
+              color={chapter.statusColor}
+            />
+          </div>
+        ) : (
+          <ProgressRing 
+            progress={chapter.statusPercent} 
+            size={36} 
+            strokeWidth={3}
+            color={chapter.statusColor}
+          />
+        )}
+        
         {chapter.cost > 0 && (
           <span className="text-[10px] text-mint font-mono">${chapter.cost}</span>
         )}
@@ -265,7 +536,21 @@ function ChapterRow({
       {isExpanded && chapter.tasks.length > 0 && (
         <div className="divide-y divide-white/6 bg-surface">
           {chapter.tasks.map(task => (
-            <TaskRow key={task.id} task={task} />
+            <TaskRow 
+              key={task.id} 
+              task={task} 
+              isEditing={isEditing}
+              onEdit={() => {}}
+              onUpdate={(updates) => {
+                // Update local task data optimistically
+                Object.assign(task, updates);
+                onUpdate({});
+              }}
+              activeTimer={activeTimer}
+              onStartTimer={onStartTimer}
+              onCompleteTask={onCompleteTask}
+              authToken={authToken}
+            />
           ))}
         </div>
       )}
@@ -285,33 +570,97 @@ function ProjectCard({
   isExpanded, 
   onToggle,
   expandedChapters,
-  onToggleChapter
+  onToggleChapter,
+  isEditing,
+  onUpdate,
+  authToken,
+  activeTimer,
+  onStartTimer,
+  onCompleteTask
 }: { 
   project: Project; 
   isExpanded: boolean;
   onToggle: () => void;
   expandedChapters: Set<string>;
   onToggleChapter: (chapterId: string) => void;
+  isEditing: boolean;
+  onUpdate: (updates: Partial<Project>) => void;
+  authToken: string;
+  activeTimer: ActiveTimer | null;
+  onStartTimer: (taskId: string) => void;
+  onCompleteTask: (taskId: string, startedAt?: string) => void;
 }) {
   const budgetPercent = project.budgetTotal > 0 
     ? (project.budgetSpent / project.budgetTotal) * 100 
     : 0;
   
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [localStatusPercent, setLocalStatusPercent] = useState(project.statusPercent);
+  
+  const handleUpdate = async (updates: Partial<Project>) => {
+    setIsUpdating(true);
+    try {
+      const properties: Record<string, unknown> = {};
+      if (updates.status !== undefined)        properties['Status']        = { select: { name: updates.status } };
+      if (updates.statusPercent !== undefined) properties['Progress']      = { number: Math.round(updates.statusPercent * 100) };
+      if (updates.budgetSpent !== undefined)   properties['Budget Spent']  = { number: updates.budgetSpent };
+      if (updates.budgetTotal !== undefined)   properties['Budget Total']  = { number: updates.budgetTotal };
+      if (Object.keys(properties).length === 0) { onUpdate(updates); return; }
+
+      const res = await fetch('/api/notion/update', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-Auth-Hash': authToken },
+        body: JSON.stringify({ pageId: project.id, properties }),
+      });
+
+      if (res.ok) {
+        onUpdate(updates);
+      }
+    } catch (err) {
+      console.error('Failed to update project:', err);
+    } finally {
+      setIsUpdating(false);
+    }
+  };
+  
+  const handleProgressSave = () => {
+    handleUpdate({ statusPercent: localStatusPercent });
+  };
+  
   return (
-    <div className="border border-white/8 rounded-xl overflow-hidden bg-surface">
+    <div className={`border border-white/8 rounded-xl overflow-hidden bg-surface ${isUpdating ? 'opacity-50' : ''}`}>
       {/* Project Header */}
       <button 
         onClick={onToggle}
         className="w-full p-4 hover:bg-elevated/50 transition-colors text-left"
       >
         <div className="flex items-start gap-4">
-          {/* Progress Ring */}
-          <ProgressRing 
-            progress={project.statusPercent} 
-            size={64}
-            strokeWidth={5}
-            color={project.statusColor}
-          />
+          {/* Progress Ring or Slider */}
+          {isEditing ? (
+            <div className="w-16 flex flex-col items-center">
+              <ProgressRing 
+                progress={localStatusPercent} 
+                size={64}
+                strokeWidth={5}
+                color={project.statusColor}
+              />
+              <div className="w-full mt-2">
+                <ProgressSlider
+                  value={localStatusPercent}
+                  onChange={setLocalStatusPercent}
+                  onSave={handleProgressSave}
+                  color={project.statusColor}
+                />
+              </div>
+            </div>
+          ) : (
+            <ProgressRing 
+              progress={project.statusPercent} 
+              size={64}
+              strokeWidth={5}
+              color={project.statusColor}
+            />
+          )}
           
           {/* Project Info */}
           <div className="flex-1 min-w-0">
@@ -345,7 +694,23 @@ function ProjectCard({
                 <span className="text-[10px] text-secondary">Chapters</span>
                 <span className="text-xs text-white">{project.chapters.length}</span>
               </div>
-              <StatusBadge status={project.status} color={project.statusColor} />
+              {isEditing ? (
+                <select
+                  value={project.status}
+                  onChange={(e) => handleUpdate({ status: e.target.value })}
+                  onClick={(e) => e.stopPropagation()}
+                  className="bg-elevated border border-white/20 rounded px-2 py-0.5 text-[10px] text-white"
+                >
+                  <option value="Not Started">Not Started</option>
+                  <option value="In Progress">In Progress</option>
+                  <option value="Review">Review</option>
+                  <option value="Complete">Complete</option>
+                  <option value="On Hold">On Hold</option>
+                  <option value="Blocked">Blocked</option>
+                </select>
+              ) : (
+                <StatusBadge status={project.status} color={project.statusColor} />
+              )}
             </div>
           </div>
           
@@ -353,9 +718,29 @@ function ProjectCard({
           <div className="flex flex-col items-end gap-2">
             <div className="text-right">
               <p className="text-[10px] text-secondary">Budget</p>
-              <p className={`text-xs font-mono ${budgetPercent > 90 ? 'text-red-400' : 'text-mint'}`}>
-                ${project.budgetSpent.toLocaleString()} / ${project.budgetTotal.toLocaleString()}
-              </p>
+              {isEditing ? (
+                <div className="flex items-center gap-1">
+                  <input
+                    type="number"
+                    value={project.budgetSpent}
+                    onChange={(e) => handleUpdate({ budgetSpent: Number(e.target.value) })}
+                    onClick={(e) => e.stopPropagation()}
+                    className="bg-elevated border border-white/20 rounded px-1 py-0.5 text-xs text-white w-16"
+                  />
+                  <span className="text-xs text-secondary">/</span>
+                  <input
+                    type="number"
+                    value={project.budgetTotal}
+                    onChange={(e) => handleUpdate({ budgetTotal: Number(e.target.value) })}
+                    onClick={(e) => e.stopPropagation()}
+                    className="bg-elevated border border-white/20 rounded px-1 py-0.5 text-xs text-white w-16"
+                  />
+                </div>
+              ) : (
+                <p className={`text-xs font-mono ${budgetPercent > 90 ? 'text-red-400' : 'text-mint'}`}>
+                  ${project.budgetSpent.toLocaleString()} / ${project.budgetTotal.toLocaleString()}
+                </p>
+              )}
             </div>
             <span className={`text-secondary text-xs transition-transform ${isExpanded ? 'rotate-180' : ''}`}>▼</span>
           </div>
@@ -377,6 +762,15 @@ function ProjectCard({
                 chapter={chapter}
                 isExpanded={expandedChapters.has(chapter.id)}
                 onToggle={() => onToggleChapter(chapter.id)}
+                isEditing={isEditing}
+                onUpdate={(updates) => {
+                  Object.assign(chapter, updates);
+                  onUpdate({});
+                }}
+                authToken={authToken}
+                activeTimer={activeTimer}
+                onStartTimer={onStartTimer}
+                onCompleteTask={onCompleteTask}
               />
             ))
           ) : (
@@ -434,6 +828,16 @@ export default function ProjectsPanel() {
   const [expandedProjects, setExpandedProjects] = useState<Set<string>>(new Set());
   const [expandedChapters, setExpandedChapters] = useState<Set<string>>(new Set());
   const [lastFetch, setLastFetch] = useState('');
+  const [isEditing, setIsEditing] = useState(false);
+  const [activeTimer, setActiveTimer] = useState<ActiveTimer | null>(null);
+  const [authToken, setAuthToken] = useState('');
+  const [syncStatus, setSyncStatus] = useState<'idle' | 'syncing' | 'error'>('idle');
+
+  // Get auth token from localStorage on mount
+  useEffect(() => {
+    const token = localStorage.getItem('dashboard_auth');
+    if (token) setAuthToken(token);
+  }, []);
 
   // Fetch projects data
   useEffect(() => {
@@ -475,6 +879,94 @@ export default function ProjectsPanel() {
     });
   };
 
+  const handleProjectUpdate = (projectId: string, updates: Partial<Project>) => {
+    setData(prev => {
+      if (!prev) return prev;
+      return {
+        ...prev,
+        projects: prev.projects.map(p => 
+          p.id === projectId ? { ...p, ...updates } : p
+        )
+      };
+    });
+    setSyncStatus('syncing');
+    setTimeout(() => setSyncStatus('idle'), 1000);
+  };
+
+  const handleStartTimer = (taskId: string) => {
+    setActiveTimer({ taskId, startedAt: new Date().toISOString() });
+  };
+
+  const handleCompleteTask = async (taskId: string, startedAt?: string) => {
+    if (!authToken) return;
+
+    // Compute actualHours from timer or prompt
+    let actualHours = 0;
+    if (startedAt) {
+      const elapsed = Date.now() - new Date(startedAt).getTime();
+      actualHours = Math.round((elapsed / 3600000) * 10) / 10;
+    } else {
+      const input = prompt('Actual hours spent (e.g. 2.5):');
+      if (!input) return;
+      actualHours = parseFloat(input);
+      if (isNaN(actualHours) || actualHours < 0) return;
+    }
+
+    setSyncStatus('syncing');
+    try {
+      const res = await fetch('/api/notion/complete', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-Auth-Hash': authToken },
+        body: JSON.stringify({ pageId: taskId, actualHours }),
+      });
+      
+      if (res.ok) {
+        // Clear timer if this was the active task
+        if (activeTimer?.taskId === taskId) {
+          setActiveTimer(null);
+        }
+        
+        // Optimistically update UI
+        setData(prev => {
+          if (!prev) return prev;
+          return {
+            ...prev,
+            projects: prev.projects.map(p => ({
+              ...p,
+              chapters: p.chapters.map(c => ({
+                ...c,
+                tasks: c.tasks.map(t => 
+                  t.id === taskId 
+                    ? { ...t, status: 'Done', statusColor: '#22c55e' }
+                    : t
+                )
+              }))
+            }))
+          };
+        });
+        
+        setSyncStatus('idle');
+      } else {
+        setSyncStatus('error');
+      }
+    } catch (err) {
+      console.error('Failed to complete task:', err);
+      setSyncStatus('error');
+    }
+  };
+
+  const handleAuth = async (password: string) => {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(password);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    
+    // Store hash (never plaintext) for API calls
+    localStorage.setItem('dashboard_auth', hashHex);
+    setAuthToken(hashHex);
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
@@ -512,11 +1004,50 @@ export default function ProjectsPanel() {
           <h2 className="text-lg font-semibold text-white">Projects</h2>
           <p className="text-secondary text-xs">Source: Notion • Synced {lastFetch}</p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
+          {/* Sync Status */}
+          {syncStatus === 'syncing' && (
+            <span className="flex items-center gap-1 text-[10px] text-teal">
+              <span className="w-1.5 h-1.5 rounded-full bg-teal animate-pulse" />
+              Syncing...
+            </span>
+          )}
+          {syncStatus === 'error' && (
+            <span className="text-[10px] text-red-400">Sync failed</span>
+          )}
+          
+          {/* Edit Toggle */}
+          <button
+            onClick={() => {
+              if (!isEditing && !authToken) {
+                const password = prompt('Enter dashboard password:');
+                if (password) handleAuth(password);
+              }
+              setIsEditing(!isEditing);
+            }}
+            className={`text-xs px-3 py-1.5 rounded transition-colors ${
+              isEditing 
+                ? 'bg-mint/20 text-mint hover:bg-mint/30' 
+                : 'bg-elevated text-secondary hover:text-white'
+            }`}
+          >
+            {isEditing ? 'Done Editing' : 'Edit'}
+          </button>
+          
           <span className="w-2 h-2 rounded-full bg-mint animate-pulse" />
           <span className="text-mint text-xs">Live</span>
         </div>
       </div>
+
+      {/* Editing Mode Indicator */}
+      {isEditing && (
+        <div className="bg-teal/10 border border-teal/30 rounded-lg px-3 py-2">
+          <p className="text-teal text-xs">
+            ✏️ Editing mode: Click on progress sliders, status dropdowns, or budget fields to update Notion directly.
+            Changes are saved automatically.
+          </p>
+        </div>
+      )}
 
       {/* Stats */}
       <StatsSummary stats={data.stats} />
@@ -531,6 +1062,12 @@ export default function ProjectsPanel() {
             onToggle={() => toggleProject(project.id)}
             expandedChapters={expandedChapters}
             onToggleChapter={toggleChapter}
+            isEditing={isEditing}
+            onUpdate={(updates) => handleProjectUpdate(project.id, updates)}
+            authToken={authToken}
+            activeTimer={activeTimer}
+            onStartTimer={handleStartTimer}
+            onCompleteTask={handleCompleteTask}
           />
         ))}
       </div>

@@ -47,3 +47,43 @@ body {
 .fade-in-2 { animation: fadeInUp 0.4s ease-out 0.20s both; }
 .fade-in-3 { animation: fadeInUp 0.4s ease-out 0.32s both; }
 .fade-in-4 { animation: fadeInUp 0.4s ease-out 0.44s both; }
+
+/* ── PH Theme (Hub) ─────────────────────────────────────────────── */
+[data-theme="ph"] {
+  --bg-primary: #1F1F1F;
+  --bg-surface: #2A2A2A;
+  --bg-elevated: #333333;
+  --accent-orange: #FF6B00;
+  --accent-orange-light: #FF8533;
+  --accent-orange-pale: #FFAA66;
+  --text-primary: #FFFFFF;
+  --text-secondary: #B0B0B0;
+}
+
+[data-theme="ph"] body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+[data-theme="ph"] ::selection {
+  background: rgba(255, 107, 0, 0.3);
+}
+
+/* PH Theme scrollbar */
+[data-theme="ph"] ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+[data-theme="ph"] ::-webkit-scrollbar-track {
+  background: #2A2A2A;
+}
+
+[data-theme="ph"] ::-webkit-scrollbar-thumb {
+  background: #FF6B00;
+  border-radius: 4px;
+}
+
+[data-theme="ph"] ::-webkit-scrollbar-thumb:hover {
+  background: #FF8533;
+}
