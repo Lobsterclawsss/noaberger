@@ -40,7 +40,7 @@ const TIER_COLOR: Record<string, string> = {
 // ─── Hub Data Types ───────────────────────────────────────────────────────────
 type Task = {
   id: string; name: string; owner: string; due: string;
-  context: string; blocker?: string;
+  context: string; blocker?: string; spec?: string;
 };
 
 type HubData = {
@@ -53,6 +53,7 @@ type HubData = {
     dueThisWeek: Task[];
     inProgress: Task[];
     blocked: Task[];
+    eventual?: Task[];
   };
   costs: {
     today: number;
@@ -266,6 +267,32 @@ function TaskKanban({ hub }: { hub: HubData | null }) {
           </div>
         ))}
       </div>
+
+      {/* Eventual pipeline — full-width strip */}
+      {hub.tasks.eventual && hub.tasks.eventual.length > 0 && (
+        <div className="mt-3 border border-indigo-400/20 rounded-xl overflow-hidden">
+          <div className="flex items-center gap-2 px-3 py-2 bg-elevated border-b border-indigo-400/20">
+            <span className="w-1.5 h-1.5 rounded-full bg-indigo-400" />
+            <span className="text-xs font-semibold text-indigo-400">Pipeline Queue</span>
+            <span className="text-secondary text-[10px] ml-1">awaiting API keys</span>
+            <span className="text-secondary text-xs ml-auto">{hub.tasks.eventual.length}</span>
+          </div>
+          <div className="grid grid-cols-3 gap-0 divide-x divide-white/6">
+            {hub.tasks.eventual.map(task => (
+              <div key={task.id} className="px-3 py-2.5 bg-surface hover:bg-elevated transition-colors">
+                <p className="text-white text-xs font-medium leading-relaxed">{task.name}</p>
+                <div className="flex gap-2 mt-1 flex-wrap">
+                  <span className="text-indigo-400 text-[10px]">{task.owner}</span>
+                  <span className="text-secondary text-[10px]">{task.context}</span>
+                </div>
+                {task.spec && (
+                  <p className="text-indigo-300/60 text-[10px] mt-0.5 font-mono truncate">📄 {task.spec.split('/').pop()}</p>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
