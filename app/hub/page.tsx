@@ -174,7 +174,11 @@ const styles: Record<string, React.CSSProperties> = {
     fontSize: '14px',
     width: '100%',
   },
-  badge: (color: string) => ({
+};
+
+// Helper function for badge styles
+function getBadge(color: string): React.CSSProperties {
+  return {
     display: 'inline-flex',
     alignItems: 'center',
     gap: '4px',
@@ -185,8 +189,8 @@ const styles: Record<string, React.CSSProperties> = {
     fontSize: '10px',
     fontWeight: '600',
     textTransform: 'uppercase',
-  }),
-};
+  };
+}
 
 // Helper function for progress bar color
 function getProgressFill(pct: number) {
@@ -309,7 +313,7 @@ function TaskKanbanPH({ hub }: { hub: HubData | null }) {
           <div key={col.key} style={styles.card}>
             <div style={{ ...styles.cardHeader, borderLeft: `4px solid ${col.color}` }}>
               <span style={{ color: col.color, fontSize: 14, fontWeight: 700 }}>{col.label}</span>
-              <span style={{ ...styles.badge(col.color), marginLeft: 'auto' }}>{col.tasks.length}</span>
+              <span style={{ ...getBadge(col.color), marginLeft: 'auto' }}>{col.tasks.length}</span>
             </div>
             <div style={{ maxHeight: 300, overflowY: 'auto' }}>
               {col.tasks.length === 0 ? (
