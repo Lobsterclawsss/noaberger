@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import EstimateConfidence from './EstimateConfidence';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 interface Task {
@@ -390,6 +391,14 @@ function ProjectCard({
             <span className="text-secondary">
               Remaining: <span className="text-white font-mono">${project.budgetRemaining.toLocaleString()}</span>
             </span>
+          </div>
+
+          {/* Estimate Accuracy */}
+          <div className="mt-3 pt-3 border-t border-white/8">
+            <EstimateConfidence
+              agentId={project.agentOwner.toLowerCase().replace(/\s+/g, '-')}
+              showPredictor={true}
+            />
           </div>
         </div>
       )}
