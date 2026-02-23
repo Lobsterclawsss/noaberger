@@ -33,54 +33,27 @@ export type Client = {
 };
 
 export const CLIENTS: Client[] = [
-  // ── EXAMPLE CLIENT ──────────────────────────────────────────────
-  // Remove or replace this with real clients
-  {
-    token: 'f3a8c2d7-9b14-4e61-a059-7c3d8f120e44',
-    name: 'Alex',
-    greeting: "Here's where things stand on your project.",
-    projects: [
-      {
-        name: 'Website Redesign',
-        description: 'Full redesign of alexbrand.com — new copy, dark theme, mobile-first.',
-        status: 'in-progress',
-        milestones: [
-          { label: 'Discovery call & brief', status: 'done' },
-          { label: 'Wireframes approved', status: 'done' },
-          { label: 'Homepage build', status: 'in-progress' },
-          { label: 'Inner pages build', status: 'pending' },
-          { label: 'QA & launch', status: 'pending' },
-        ],
-        deliverables: [
-          { label: 'Project Brief (PDF)', url: '#' },
-          { label: 'Wireframes (Figma)', url: '#' },
-        ],
-      },
-    ],
-  },
-
-  // ── EXAMPLE FRIEND ──────────────────────────────────────────────
-  {
-    token: 'b91e4f73-2c6a-4d08-8b3e-5a9f7e203c17',
-    name: 'Jake',
-    greeting: "Dropping some stuff here so you can follow along.",
-    projects: [
-      {
-        name: 'BLEUKEI Intro Deck',
-        description: 'Investor-facing one-pager and pitch deck for BLEUKEI.',
-        status: 'complete',
-        milestones: [
-          { label: 'One-pager draft', status: 'done' },
-          { label: 'Pitch deck draft', status: 'done' },
-          { label: 'Final review', status: 'done' },
-        ],
-        deliverables: [
-          { label: 'One-pager (HTML)', url: '/projects/duke-kahanamoku-one-pager' },
-          { label: 'Pitch deck (HTML)', url: '/projects/duke-kahanamoku-pitch-deck' },
-        ],
-      },
-    ],
-  },
+  // Add real clients here
+  // Template:
+  // {
+  //   token: 'unique-token-here',
+  //   name: 'Client Name',
+  //   greeting: "Here's your project overview.",
+  //   projects: [
+  //     {
+  //       name: 'Project Name',
+  //       description: 'Project description here.',
+  //       status: 'in-progress',
+  //       milestones: [
+  //         { label: 'Milestone 1', status: 'done' },
+  //         { label: 'Milestone 2', status: 'in-progress' },
+  //       ],
+  //       deliverables: [
+  //         { label: 'Deliverable Name', url: '#' },
+  //       ],
+  //     },
+  //   ],
+  // },
 ];
 
 // Helper: look up a client by token

@@ -103,7 +103,7 @@ const ACTIVITY_DOT: Record<string, string> = {
 
 const STATS = [
   { label: 'Gateway', value: 'ws://127.0.0.1:18789' },
-  { label: 'Version', value: 'OpenClaw v2026.2.21-2' },
+  { label: 'Version', value: 'OpenClaw v2026.2.22-2' },
   { label: 'Node', value: '22.14.0 LTS' },
   { label: 'Agents', value: '8 active' },
   { label: 'Channels', value: 'WhatsApp · Discord' },
