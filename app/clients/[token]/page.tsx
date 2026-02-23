@@ -3,6 +3,10 @@ import { notFound } from 'next/navigation';
 import { getClient, getAllTokens, type ProjectStatus } from '../data';
 
 // Required for Next.js static export with dynamic routes
+// dynamicParams = false tells Next.js to return 404 for any path not in generateStaticParams()
+// This also fixes a Next.js 14 bug where empty generateStaticParams() triggers a false "missing" error
+export const dynamicParams = false;
+
 export function generateStaticParams() {
   return getAllTokens().map((token) => ({ token }));
 }
