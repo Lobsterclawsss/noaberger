@@ -153,12 +153,8 @@ const styles: Record<string, React.CSSProperties> = {
     borderRadius: '4px',
     overflow: 'hidden',
   },
-  progressFill: (pct: number) => ({
-    height: '100%',
-    background: pct > 80 ? THEME.red : pct > 60 ? THEME.yellow : THEME.orange,
-    borderRadius: '4px',
-    transition: 'width 0.3s ease',
-  }),
+  // progressFill is a function, not a direct style property
+  // Use getProgressFill(pct) function instead
   button: {
     background: THEME.orange,
     color: THEME.bg,
@@ -191,6 +187,16 @@ const styles: Record<string, React.CSSProperties> = {
     textTransform: 'uppercase',
   }),
 };
+
+// Helper function for progress bar color
+function getProgressFill(pct: number) {
+  return {
+    height: '100%',
+    background: pct > 80 ? THEME.red : pct > 60 ? THEME.yellow : THEME.orange,
+    borderRadius: '4px',
+    transition: 'width 0.3s ease',
+  };
+}
 
 // ─── Components ───────────────────────────────────────────────────────────────
 function Constellation({ hoveredAgent, onHover }: { hoveredAgent: string | null; onHover: (id: string | null) => void }) {
@@ -359,7 +365,7 @@ function CostTrackerPH({ hub }: { hub: HubData | null }) {
           </span>
         </div>
         <div style={styles.progressBar}>
-          <div style={{ ...styles.progressFill(dailyPct), width: `${dailyPct}%` }} />
+          <div style={{ ...getProgressFill(dailyPct), width: `${dailyPct}%` }} />
         </div>
         <p style={{ color: THEME.textSecondary, fontSize: 11, marginTop: 4 }}>{dailyPct.toFixed(0)}% of daily limit</p>
       </div>
@@ -372,7 +378,7 @@ function CostTrackerPH({ hub }: { hub: HubData | null }) {
           </span>
         </div>
         <div style={styles.progressBar}>
-          <div style={{ ...styles.progressFill(monthlyPct), width: `${monthlyPct}%` }} />
+          <div style={{ ...getProgressFill(monthlyPct), width: `${monthlyPct}%` }} />
         </div>
         <p style={{ color: THEME.textSecondary, fontSize: 11, marginTop: 4 }}>{monthlyPct.toFixed(0)}% of monthly limit</p>
       </div>
