@@ -7,6 +7,7 @@ import RadialHeatmap from './components/RadialHeatmap';
 import ModelUsageRings from './components/ModelUsageRings';
 import ProjectsPanel from './components/ProjectsPanel';
 import BudgetBars from './components/BudgetBars';
+import AgentActivityFeed, { AgentActivityEntry } from './components/AgentActivityFeed';
 
 // SHA-256 of 'bleukei2026'
 const ADMIN_HASH = '401b4d6c69937db32ae45f66b66af19ffc54e07146549bec2ea564b190352156';
@@ -80,6 +81,7 @@ type HubData = {
     }[];
   };
   activity: { timestamp: string; agent: string; action: string; type: string }[];
+  agentActivity?: AgentActivityEntry[];
   handoffs: {
     pending: { id: string; from: string; to: string; title: string; priority: string; createdAt: string }[];
     completed: { id: string; title: string; completedAt: string }[];
@@ -731,6 +733,11 @@ export default function Dashboard() {
           <TerminalLogStream hub={hub} />
           <RadialHeatmap hub={hub} />
           <ModelUsageRings hub={hub} />
+        </div>
+
+        {/* Agent Activity Feed — live task tracking */}
+        <div className="mt-4">
+          <AgentActivityFeed hub={hub} />
         </div>
 
       </div>
