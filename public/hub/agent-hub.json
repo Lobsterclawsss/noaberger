@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "lastUpdated": "2026-03-16T05:49:14.300Z",
+  "lastUpdated": "2026-03-20T23:39:06.305Z",
   "updatedBy": "sync-github",
   "system": {
     "mode": "production",
@@ -147,8 +147,8 @@
     }
   },
   "costs": {
-    "today": 1.53,
-    "thisMonth": 39.71,
+    "today": 1.29,
+    "thisMonth": 40.1,
     "dailyLimit": 5,
     "monthlyLimit": 50,
     "byAgent": {
@@ -157,13 +157,13 @@
       "antigravity": 0
     },
     "alerts": [],
-    "trackingNote": "OpenRouter cumulative: $39.71 over ~26 days (~$1.53/day). BYOK (Gemini) not included — add ~$3-15/day.",
+    "trackingNote": "OpenRouter cumulative: $40.10 over ~31 days (~$1.29/day). BYOK (Gemini) not included — add ~$3-15/day.",
     "byokNote": "BYOK gap: Gemini models (flash-lite, flash-image) bill via Google AI Studio — not tracked here. Dashboard undercounts true spend.",
-    "openRouterUsageTotal": 39.713631127,
-    "openRouterLastSync": "2026-03-16T05:49:14.286Z"
+    "openRouterUsageTotal": 40.104160697,
+    "openRouterLastSync": "2026-03-20T23:39:06.160Z"
   },
   "github": {
-    "lastSync": "2026-03-16T05:49:12.095Z",
+    "lastSync": "2026-03-20T23:39:05.720Z",
     "repositories": [
       {
         "name": "noaberger",
